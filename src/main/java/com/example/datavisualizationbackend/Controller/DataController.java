@@ -17,6 +17,8 @@ public class DataController {
     @Autowired
     DataService dataService;
 
+
+
     @GetMapping("/getall")//end point to get all the data
     public List<DataModel> getAllData() {
         return dataService.getAllData();
@@ -35,4 +37,15 @@ public class DataController {
        return DataService.getDataWithFilters(endYear,topic,sector,region,source,swot,country,city);
 
     }
+
+    @GetMapping("/swot")
+    public Map<String, Integer> getSwotCounts() {
+        return DataService.getSwotCounts();
+    }
+
+    @GetMapping("/endYears")
+    public List<Integer> getEndYears() {
+        return dataService.getEndYears();
+    }
+
 }

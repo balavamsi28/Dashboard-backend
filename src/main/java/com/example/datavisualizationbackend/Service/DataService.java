@@ -5,8 +5,10 @@ import com.example.datavisualizationbackend.Entity.DataEntity;
 import com.example.datavisualizationbackend.Repository.DataRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.Map;
 
 @Service
 public class DataService {
@@ -54,5 +56,46 @@ public class DataService {
         dto.setTitle(entity.getTitle());
         dto.setLikelihood(entity.getLikelihood());
         return dto;
+    }
+
+    public static Map<String, Integer> getSwotCounts() {
+        List<DataEntity> allData = dataRepository.findAll();
+
+        // Initialize counts for each SWOT type
+        Map<String, Integer> swotCounts = new HashMap<>();
+        swotCounts.put("strength", 0);
+        swotCounts.put("weakness", 0);
+        swotCounts.put("opportunity", 0);
+        swotCounts.put("threat", 0);
+
+        // Count the occurrences of each SWOT type
+        for (DataEntity data : allData) {
+            String swot = data.getSwot();
+            if (swot != null && !swot.isEmpty()) {
+                switch (swot.toLowerCase()) {
+                    case "strength":
+                        swotCounts.put("strength", swotCounts.get("strength") + 1);
+                        break;
+                    case "weakness":
+                        swotCounts.put("weakness", swotCounts.get("weakness") + 1);
+                        break;
+                    case "opportunity":
+                        swotCounts.put("opportunity", swotCounts.get("opportunity") + 1);
+                        break;
+                    case "threat":
+                        swotCounts.put("threat", swotCounts.get("threat") + 1);
+                        break;
+                    default:
+                        // Handle unexpected SWOT types if needed
+                        break;
+                }
+            }
+        }
+
+        return swotCounts;
+    }
+
+    public List<Integer> getEndYears() {
+        return dataRepository.findDistinctEndYears(); // Implement this method in your repository
     }
 }

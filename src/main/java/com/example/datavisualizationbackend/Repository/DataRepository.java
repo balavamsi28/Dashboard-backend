@@ -1,6 +1,7 @@
 package com.example.datavisualizationbackend.Repository;
 
 import com.example.datavisualizationbackend.Entity.DataEntity;
+import jakarta.persistence.GeneratedValue;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -27,4 +28,7 @@ public interface DataRepository extends JpaRepository<DataEntity,Long> {
             String country,
             String city
     );
+
+    @Query("SELECT distinct d.endYear from DataEntity d")
+    List<Integer> findDistinctEndYears();
 }
